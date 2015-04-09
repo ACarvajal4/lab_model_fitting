@@ -74,7 +74,9 @@ plotFit(x,y,z,'badFit')
 #
 #  Step 6: Find SSR for poor fit from example function
 #
-print SSR(x,y,h0)
+h0=10
+k=SSR(x,y,h0)
+print k
 
 #
 #   list for possible slopes. 
@@ -86,16 +88,27 @@ h0s=np.arange(0.,100.,0.1)
 #  Step 7: Find slope and intercept that minimize
 #              the RSS
 #
-best_h0 = 0.
+best_h0 = 0 
 min_ssr = np.inf
+for h0 in h0s:
+    w=SSR(x,y,h0)
+    if w<min_ssr:
+        min_ssr=w 
+        best_h0=h0
+print best_h0
 
 #
 #   Step 8: Plot Result
 #
 #
+h0=best_h0
+z=hubble(x,h0)
 
+plotFit(x,y,z,'bestFit')
 
 #
 #   Step 9: Plot Residuals
 #
 #
+resids=[z[i]-y[i] for i in range(len(z))]
+plotData(z,y,'resids')
